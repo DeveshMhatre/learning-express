@@ -3,19 +3,22 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
-
-require("dotenv").config();
+const mongoose = require("mongoose");
+require("dotenv/config");
 
 const app = express();
-
-const ads = [{ title: "Hello, world (again)!" }];
 
 app.use(helmet());
 app.use(bodyParser.json());
 app.use(cors());
 app.use(morgan("combined"));
 
-app.get("/", (req, res) => res.send(ads));
+const postsRoutes = require("./routes/posts");
+app.use("/posts", postsRoutes);
+
+mongoose.connect(process.env.DATABASE_URL, () =>
+  console.log("Connected to DB")
+);
 
 app.listen(process.env.PORT, () =>
   console.log(
