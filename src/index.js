@@ -1,3 +1,4 @@
+// Dependencies
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -6,18 +7,22 @@ const morgan = require("morgan");
 const mongoose = require("mongoose");
 require("dotenv/config");
 
+// Express App
 const app = express();
 
+// App Middlewares
 app.use(helmet());
 app.use(bodyParser.json());
 app.use(cors());
 app.use(morgan("combined"));
 
+// Post routes
 const postsRoutes = require("./routes/posts");
 app.use("/posts", postsRoutes);
 
+// Database connection
 mongoose.connect(process.env.DATABASE_URL, () =>
-  console.log("Connected to DB")
+  console.log("⚡[db]: Connected to the Database")
 );
 
 app.listen(process.env.PORT, () =>

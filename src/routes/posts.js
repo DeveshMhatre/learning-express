@@ -1,9 +1,11 @@
+// Dependencies
 const express = require("express");
 
 const Post = require("../models/Post");
 
 const router = express.Router();
 
+// GET all posts
 router.get("/", async (req, res) => {
   try {
     const posts = await Post.find();
@@ -13,6 +15,17 @@ router.get("/", async (req, res) => {
   }
 });
 
+// GET specific post
+router.get("/:postId", async (req, res) => {
+  try {
+    const post = await Post.findById(req?.params?.postId);
+    res.json(post);
+  } catch (err) {
+    res.json({ message: err?.message });
+  }
+});
+
+// Create new post
 router.post("/", async (req, res) => {
   const post = new Post({
     title: req?.body?.title,
