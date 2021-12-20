@@ -40,6 +40,20 @@ router.post("/", async (req, res) => {
   }
 });
 
+// UPDATE specific post
+router.patch("/:postId", async (req, res) => {
+  try {
+    await Post.findByIdAndUpdate(
+      { _id: req?.params?.postId },
+      { $set: req?.body }
+    );
+    const updatedPost = await Post.findById(req?.params?.postId);
+    res.json(updatedPost);
+  } catch (err) {
+    res.json({ message: err?.message });
+  }
+});
+
 // DELETE specific post
 router.delete("/:postId", async (req, res) => {
   try {
